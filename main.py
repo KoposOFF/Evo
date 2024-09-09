@@ -89,10 +89,16 @@ def get_chromedriver(use_proxy=False, user_agent=None):
 
 
 def main():
-    driver = get_chromedriver(use_proxy=True, user_agent='Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
+    driver = get_chromedriver(use_proxy=False, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36')
     driver.get('https://www.nseindia.com/')
-    time.sleep(100)
-
+    # time.sleep(3)
+    marker = driver.find_element(By.ID, 'link_2')
+    actions = ActionChains(driver)
+    actions.move_to_element(marker).perform()
+    time.sleep(5)
+    link = driver.find_element(By.LINK_TEXT, "Pre-Open Market")
+    link.click()
+    time.sleep(20)
     driver.quit()
 
 
