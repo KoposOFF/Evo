@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import zipfile
 import time
 import os
@@ -90,6 +92,11 @@ def get_chromedriver(use_proxy=False, user_agent=None):
 
 def main():
     driver = get_chromedriver(use_proxy=False, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36')
+    cookies = driver.get_cookies()
+    driver.delete_all_cookies()
+    for cookie in cookies:
+        driver.add_cookie(cookie) # добавление сессии решило проблему с подгрузкой котировок в таблицу
+
     driver.get('https://www.nseindia.com/')
     # time.sleep(3)
     marker = driver.find_element(By.ID, 'link_2')
@@ -98,7 +105,10 @@ def main():
     time.sleep(5)
     link = driver.find_element(By.LINK_TEXT, "Pre-Open Market")
     link.click()
+ 
+
     time.sleep(20)
+
     driver.quit()
 
 
