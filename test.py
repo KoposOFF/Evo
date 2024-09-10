@@ -1,35 +1,27 @@
 from selenium import webdriver
-# from seleniumwire import webdriver
-# from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+# Укажите путь к драйверу Chrome
+service = Service()
+
+# Настройка опций для Chrome
+chrome_options = Options()
+chrome_options.add_argument("--disable-blink-features=AutomationControlled")  # Убираем флаг автоматизации
+chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])  # Отключаем автоматизацию
+
+# Инициализация веб-драйвера с опциями
+driver = webdriver.Chrome(service=service, options=chrome_options)
+
+# Обновляем значение navigator.webdriver на false
+driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => false})")
+
+# Открываем тестовый сайт
+driver.get("https://bot.sannysoft.com/")  # Этот сайт проверяет, распознается ли бот
+
+# Даем время на проверку
 import time
-import os
-from dotenv import load_dotenv
+time.sleep(25)
 
-load_dotenv()
-LOGIN = os.getenv("LOGIN")
-PASS = os.getenv("PASS")
-PROXY = os.getenv("PROXY")
-
-
-def test_click():
-    # option = webdriver.ChromeOptions()
-    # option.add_argument(f"--proxy-server={PROXY}")
-    option = {
-    'proxy': {
-            'http': f'http://{LOGIN}:{PASS}@{PROXY}',
-            'https': f'https://{LOGIN}:{PASS}@{PROXY}',
-            'no_proxy': 'localhost,127.0.0.1'  # Сайты, которые не должны использовать прокси
-        }
-    }
-    browser = webdriver.Chrome(seleniumwire_options=option)
-    
-    browser.get("https://nseindia.com/")
-    time.sleep(1)
-
-    # browser.quit()
-
-if __name__ == "__main__":
-    test_click()
-    print(LOGIN)
-    print(PASS)
-    print(PROXY)
+# Закрываем браузер
+driver.quit()

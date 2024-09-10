@@ -85,29 +85,40 @@ def get_chromedriver(use_proxy=False, user_agent=None):
     if user_agent:
         chrome_options.add_argument(f'--user-agent={user_agent}')
 
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")  # Убираем флаг автоматизации
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])  # Отключаем автоматизацию
+    chrome_options.page_load_strategy = 'eager' # не дожидаясь полной загрузки страницы
     driver = webdriver.Chrome(options=chrome_options)
 
     return driver
 
 
 def main():
-    driver = get_chromedriver(use_proxy=False, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36')
+    
+    driver = get_chromedriver(use_proxy=True, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0')
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => false})")
     cookies = driver.get_cookies()
     driver.delete_all_cookies()
     for cookie in cookies:
         driver.add_cookie(cookie) # добавление сессии решило проблему с подгрузкой котировок в таблицу
 
     driver.get('https://www.nseindia.com/')
-    # time.sleep(3)
+    time.sleep(3)
     marker = driver.find_element(By.ID, 'link_2')
     actions = ActionChains(driver)
     actions.move_to_element(marker).perform()
     time.sleep(5)
     link = driver.find_element(By.LINK_TEXT, "Pre-Open Market")
     link.click()
+   # Прокрутка страницы вниз
+    time.sleep(20)  # Пауза для имитации реального пользователя
+   
+    # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # Скролл вниз до конца страницы
+
+    # Прокрутка страницы вверх
+    # driver.execute_script("window.scrollTo(0, 0);")  # Скролл вверх до начала страницы
  
 
-    time.sleep(20)
 
     driver.quit()
 
