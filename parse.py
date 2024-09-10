@@ -17,4 +17,4 @@ def pars():
             writer = csv.writer(file, delimiter=";", dialect="excel")
             writer.writerow([name,price])
 
-    print(f'{name, price}')
+        print(f'name: {name}, price: {price}')

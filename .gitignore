@@ -3,3 +3,4 @@ evo
 proxy_auth_plugin.zip
 test.py
 chrome-win64
+__pycache__

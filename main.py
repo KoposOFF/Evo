@@ -7,6 +7,7 @@ import zipfile
 import time
 import os
 from dotenv import load_dotenv
+from parse import pars
 
 load_dotenv()
 
@@ -94,7 +95,7 @@ def get_chromedriver(use_proxy=False, user_agent=None):
 
 
 def main():
-    
+    # использовал свой прокси, если прокси уже настроен глобально то use_proxy поставить в False
     driver = get_chromedriver(use_proxy=True, user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0')
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => false})")
     cookies = driver.get_cookies()
@@ -117,17 +118,20 @@ def main():
         )
         print("Элемент найден!")
         time.sleep(5)
-        
+
         page_source = driver.page_source # Получение исходного кода страницы
         with open("saved_page.html", "w", encoding="utf-8") as file: # Сохранение страницы в локальный файл
             file.write(page_source)
     except:
         print("Элемент не найден в течение времени ожидания")
-
-    # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # Скролл вниз до конца страницы
-
-    # Прокрутка страницы вверх
-    # driver.execute_script("window.scrollTo(0, 0);")  # Скролл вверх до начала страницы
+    time.sleep(2)
+    pars()
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # Скролл вниз до конца страницы
+    driver.execute_script("window.scrollTo(0, 0);")  # Скролл вверх до начала страницы
+    time.sleep(2)
+    link = driver.find_element(By.ID, "link_0") # имитация нажатия на главную стр
+    link.click()
+    time.sleep(5)
 
     driver.quit()
 
