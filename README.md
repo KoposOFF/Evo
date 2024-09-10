@@ -19,14 +19,13 @@ Linux:
     python3 main.py
 
 Windows:
-1.
   ~~~cmd
     git clone https://github.com/KoposOFF/Evo.git
    cd имя_репозитория
    python -m venv venv
    venv\Scripts\activate
    pip install -r requirements.txt
-запустите код командой:
+   запустите код командой:
     python3 main.py
 _________________________________________________________________________________________________
 В проекте использован прокси сервер, обязательно добавтье файл в корень проекта с именем : ".env"
