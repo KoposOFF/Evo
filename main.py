@@ -100,7 +100,7 @@ def main():
     cookies = driver.get_cookies()
     driver.delete_all_cookies()
     for cookie in cookies:
-        driver.add_cookie(cookie) # добавление сессии решило проблему с подгрузкой котировок в таблицу
+        driver.add_cookie(cookie) # добавление сессии для лучшей имитации пользователя
 
     driver.get('https://www.nseindia.com/')
     time.sleep(3)
@@ -110,15 +110,24 @@ def main():
     time.sleep(5)
     link = driver.find_element(By.LINK_TEXT, "Pre-Open Market")
     link.click()
-   # Прокрутка страницы вниз
-    time.sleep(20)  # Пауза для имитации реального пользователя
-   
+    time.sleep(5) 
+    try:
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "preOpenMlogo"))
+        )
+        print("Элемент найден!")
+        time.sleep(5)
+        
+        page_source = driver.page_source # Получение исходного кода страницы
+        with open("saved_page.html", "w", encoding="utf-8") as file: # Сохранение страницы в локальный файл
+            file.write(page_source)
+    except:
+        print("Элемент не найден в течение времени ожидания")
+
     # driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")  # Скролл вниз до конца страницы
 
     # Прокрутка страницы вверх
     # driver.execute_script("window.scrollTo(0, 0);")  # Скролл вверх до начала страницы
- 
-
 
     driver.quit()
 
