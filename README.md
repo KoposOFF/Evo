@@ -8,19 +8,19 @@
 Чтобы установить проект локально, выполните следующие шаги:
 Linux: 
 1. Установите пакет python3-venv, если он не установлен:
-   bash
+   ~~~bash
    sudo apt install python3-venv
    git clone https://github.com/KoposOFF/Evo.git
    cd имя_репозитория
    python3 -m venv venv
    source venv/bin/activate 
    pip install -r requirements.txt
-  запустите код командой:
+     запустите код командой:
     python3 main.py
 
 Windows:
 1.
-  cmd
+  ~~~cmd
     git clone https://github.com/KoposOFF/Evo.git
    cd имя_репозитория
    python -m venv venv
